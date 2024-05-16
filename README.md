@@ -8,4 +8,8 @@ python manage.py createsuperuser
 
 python manage.py runserver
 
+ git config --global user.name "git name"
+ 
+ git config --global user.email "git email"
+
 
