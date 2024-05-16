@@ -1,0 +1,13 @@
+blog/templates/main_page.html
+ Hello world
+<br>
+{{pst}}
+
+<br>
+{% for post in pst %}
+    <a href="/post/{{post.id}}">
+        <h1> {{ post.title }} </h1>
+    </a>
+         {{ post.text }}
+    <br>
+{% endfor %}
