@@ -31,5 +31,5 @@ urlpatterns = [
     path('register/', register_view),
     path('shop/goods/category_<int:cat_id>/goods_<int:goods_id>/', cat_goods_view),
     # path('shop/goods/category_<int:cat_id>/', cat_view),
-
+    добавьте просмотре всех товаров для конкретной категории
 ]
