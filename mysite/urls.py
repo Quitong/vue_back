@@ -16,10 +16,20 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from blog.views import main_view, post_view
+from blog.views import main_view, post_view, quiz_list, quiz_detail, login_view, register_view
+from shop.views import cat_goods_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', main_view),
-    path('post/<int:pk>/', post_view)
+    # path('me/', me_main_view), #https://tutorial.djangogirls.org/ru/django_orm/
+    #этот адрес должен отображать только ваши посты
+    path('post/<int:pk>/', post_view),
+    path('quiz/', quiz_list),
+    path('quiz/<int:pk>/', quiz_detail),
+    path('login/',login_view),
+    path('register/', register_view),
+    path('shop/goods/category_<int:cat_id>/goods_<int:goods_id>/', cat_goods_view),
+    # path('shop/goods/category_<int:cat_id>/', cat_view),
+
 ]

@@ -5,12 +5,26 @@
     <title>Title</title>
 </head>
 <body>
+автор:<br>
+ {{post.author.username}} <br>
 Название:<br>
  {{post.title}} <br>
 Текст:<br>
 {{post.text}}<br>
+
+{% if user.is_authenticated %}
+    <form method="POST" class="post-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="save btn btn-default">Save</button>
+    </form>
+{% else %}
+    для создания коментариев авторизуйтесь
+{% endif %}
+
 {% for com in comments %}
-   <p> Комментарий {{com.id}}: </p>
+   <p> Комментарий {{com.id}} от {{com.author.username}}: </p>
+
     <p>{{com.text}}</p>
 {% endfor %}
 

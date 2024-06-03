@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<p>{{quiz.title}}</p>
+{% for question in quiz.questions %}
+    <p>{{question.text}}</p>
+    ответы:
+    {% for answer in question.answers %}
+        {{answer.text}}
+
+    {% endfor %}
+    конец ответов
+
+{% endfor %}
+</body>
+</html>

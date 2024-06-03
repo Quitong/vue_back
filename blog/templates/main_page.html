@@ -11,3 +11,14 @@ blog/templates/main_page.html
          {{ post.text }}
     <br>
 {% endfor %}
+
+{% if user.is_authenticated %}
+    <form method="POST" class="post-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="save btn btn-default">Save</button>
+    </form>
+{% else %}
+    для создания постов авторизуйтесь
+{% endif %}
+{{user.username}}
