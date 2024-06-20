@@ -18,11 +18,12 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
 from blog.views import main_view, post_view, quiz_list, quiz_detail, login_view, register_view
-from shop.views import cat_goods_view, GoodsViewSet
+from shop.views import cat_goods_view, GoodsViewSet, BasketViewSet
 
 router = DefaultRouter()
 router.register(r'shop', GoodsViewSet, basename='shop')
-
+router.register(r'basket', BasketViewSet, basename='basket')
+#http://127.0.0.1:8000/shop/basket/
 
 urlpatterns = [
     path('shop/', include(router.urls)),

@@ -1,12 +1,13 @@
 from django.http import Http404
 from django.shortcuts import render, redirect
 from django.views.defaults import page_not_found
+from rest_framework import mixins
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet, GenericViewSet
 
-from shop.models import Goods, Category
-from shop.serializers import GoodsSerializer
+from shop.models import Goods, Category, BasketItem, Basket
+from shop.serializers import GoodsSerializer, BasketSerializer
 
 
 #'shop/goods/<int:cat_id>/<int:goods_id>/'
@@ -25,7 +26,6 @@ def cat_goods_view(request,cat_id,goods_id):
             'good' : good,
         }
     )
-    # Goods.objects.filter(name="Перекись",category__id=2)
 
 class GoodsViewSet(ModelViewSet):
     """
@@ -45,5 +45,42 @@ class GoodsViewSet(ModelViewSet):
         tovar.likes += 1
         tovar.save()
         return Response({'status': 'ok'})
+    @action(detail=True, methods=['post'])
+    def add_to_basket(self, request, pk=None):
+        qs = self.get_queryset()
+        tovar = qs.filter(pk=pk).first()
+        user = request.user
+        basket = user.baskets.last()
+        if basket is None:
+            basket = Basket(user=user)
+            basket.save()
+        b_item = BasketItem.objects.filter(
+            basket=basket,
+            good=tovar,
+        ).first()
+        if b_item is None: #у нас нет такого в корзине
+            BasketItem(
+                basket=basket,
+                good = tovar,
+                kolvo = 1
+            ).save()
+        else:
+            b_item.kolvo+=1
+            b_item.save()
+        return Response({'status': 'ok'})
 
+
+class BasketViewSet(GenericViewSet):
+    queryset = Basket.objects.all()
+    serializer_class = BasketSerializer
+    def _retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+    def get_object(self):
+        user = self.request.user
+        basket = user.baskets.last()
+        return basket
+    def list(self, request, *args, **kwargs):
+        return self._retrieve(request, *args, **kwargs)
 
