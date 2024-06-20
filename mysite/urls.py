@@ -14,12 +14,21 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
 
 from blog.views import main_view, post_view, quiz_list, quiz_detail, login_view, register_view
-from shop.views import cat_goods_view
+from shop.views import cat_goods_view, GoodsViewSet
+
+router = DefaultRouter()
+router.register(r'shop', GoodsViewSet, basename='shop')
+
 
 urlpatterns = [
+    path('shop/', include(router.urls)),
+
+
+
     path('admin/', admin.site.urls),
     path('', main_view),
     # path('me/', me_main_view), #https://tutorial.djangogirls.org/ru/django_orm/
@@ -31,5 +40,5 @@ urlpatterns = [
     path('register/', register_view),
     path('shop/goods/category_<int:cat_id>/goods_<int:goods_id>/', cat_goods_view),
     # path('shop/goods/category_<int:cat_id>/', cat_view),
-    добавьте просмотре всех товаров для конкретной категории
+    #добавьте просмотре всех товаров для конкретной категории
 ]
