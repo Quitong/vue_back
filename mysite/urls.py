@@ -23,7 +23,7 @@ from shop.views import cat_goods_view, GoodsViewSet, BasketViewSet
 router = DefaultRouter()
 router.register(r'shop', GoodsViewSet, basename='shop')
 router.register(r'basket', BasketViewSet, basename='basket')
-#http://127.0.0.1:8000/shop/basket/
+# http://127.0.0.1:8000/shop/basket/
 
 urlpatterns = [
     path('shop/', include(router.urls)),

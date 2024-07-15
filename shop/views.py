@@ -6,8 +6,9 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 
-from shop.models import Goods, Category, BasketItem, Basket
+from shop.models import Goods, Category, BasketItem, Basket, UserLikes
 from shop.serializers import GoodsSerializer, BasketSerializer
+from shop.utils import get_client_ip
 
 
 #'shop/goods/<int:cat_id>/<int:goods_id>/'
@@ -42,6 +43,18 @@ class GoodsViewSet(ModelViewSet):
     def like(self, request, pk=None):
         qs = self.get_queryset()
         tovar = qs.filter(pk=pk).first()
+        user = request.user
+        if user.is_anonymous:
+            ip = get_client_ip(request)
+            if UserLikes.objects.filter(good=tovar,ip=ip).exists():
+                return Response({'status': 'you already liked'}, status=208)
+            user_like = UserLikes(good=tovar,ip=ip)
+        else:
+            if UserLikes.objects.filter(good=tovar,user=user).exists():
+                return Response({'status': 'you already liked'},status=208)
+            user_like = UserLikes(good=tovar,user=user)
+
+        user_like.save()
         tovar.likes += 1
         tovar.save()
         return Response({'status': 'ok'})
@@ -67,7 +80,7 @@ class GoodsViewSet(ModelViewSet):
         else:
             b_item.kolvo+=1
             b_item.save()
-        return Response({'status': 'ok'})
+        return Response({'status': 'ok'},status=208)
 
 
 class BasketViewSet(GenericViewSet):

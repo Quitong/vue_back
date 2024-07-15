@@ -26,3 +26,10 @@ class BasketItem(models.Model):
     basket = models.ForeignKey(Basket, models.CASCADE, related_name="basket_items")
     good = models.ForeignKey(Goods, models.CASCADE)
     kolvo = models.IntegerField(validators=[validate_kolvo,])
+
+class UserLikes(models.Model):
+    def __str__(self):
+        return f"{self.user.id if self.user else '-'},{self.good.id},{self.ip}"
+    user = models.ForeignKey(User, models.CASCADE, related_name="user_likes", null=True)
+    good = models.ForeignKey(Goods, models.CASCADE)
+    ip = models.CharField(max_length=45)
