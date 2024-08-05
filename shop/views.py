@@ -82,6 +82,10 @@ class GoodsViewSet(ModelViewSet):
             b_item.save()
         return Response({'status': 'ok'},status=208)
 
+    def list(self, request, *args, **kwargs):
+        print(request.user)
+        return super().list(request, *args, **kwargs)
+
 
 class BasketViewSet(GenericViewSet):
     queryset = Basket.objects.all()
