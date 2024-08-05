@@ -69,7 +69,9 @@ def post_view(request, pk):
 
 
 def quiz_list(request,):
+    print(request.user)
     quizes = Quiz.objects.all()
+    print(42,request.META.get('HTTP_AUTHORIZATION', b'nothing'))
     return render(
         request,
         'quizes_list.html',

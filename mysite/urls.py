@@ -28,7 +28,7 @@ router.register(r'basket', BasketViewSet, basename='basket')
 
 urlpatterns = [
     path('shop/', include(router.urls)),
-    path('ё', CustomAuthToken.as_view()),
+    path('ё/', CustomAuthToken.as_view()),
     path('register/', register_user, name='register'),
 
     path('admin/', admin.site.urls),
